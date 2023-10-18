@@ -2,22 +2,25 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once("classe/CRUD.php");
+require_once('classe/CRUD.php');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $crud = new CRUD();
+$crud = new CRUD;
 
-    $voyage_data = array(
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $dataVoyage = [
         'destination' => $_POST['destination'],
         'date_depart' => $_POST['date_depart'],
         'date_retour' => $_POST['date_retour'],
         'prix' => $_POST['prix'],
-        'description' => $_POST['description'],
-    );
-    
-    $crud->insert('voyage', $voyage_data);
+        'description' => $_POST['description']
+    ];
 
-    header('Location: index.php');
+    $insertVoyage = $crud->insert('voyage', $dataVoyage);
+    
+    if ($insertVoyage !== false) {
+        header('location:index.php');
+        die;
+    } 
 }
 ?>
 
@@ -26,26 +29,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un voyage</title>
+    <title>Ajout voyage</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
 </head>
 <body>
-    <form action="voyage-create.php" method="POST">
-        <label for="destination">Destination</label>
-        <input type="text" id="destination" name="destination" value="Canada" required><br>
+    <main>
+        <h1>Ajouter un voyage</h1>
+        <form action="voyage-create.php" method="POST">
+            <label for="destination">Destination :</label>
+            <input type="text" id="destination" name="destination" value="Canada" required>
 
-        <label for="date depart">Date de départ</label>
-        <input type="date" id="date depart" name="date depart" required><br>
+            <label for="date depart">Date de départ : </label>
+            <input type="date" id="date depart" name="date depart" value="2023-10-18" required>
 
-        <label for="date retour">Date de retour</label>
-        <input type="date" id="date retour" name="date retour" required><br>
-
-        <label for="prix">Prix</label>
-        <input type="text" id="prix" name="prix" value="3000" required><br>
-
-        <label for="description">Description</label>
-        <input type="text" id="description" name="description" value="Bla bla bla" required><br>
-
-        <input type="submit" value="Ajouter">
-    </form>
+            <label for="date retour">Date de retour :</label>
+            <input type="date" id="date retour" name="date retour" value="2023-11-01" required>
+            
+            <label for="prix">Prix :</label>
+            <input type="number" id="prix" name="prix" value="3000" required>
+            
+            <label for="description">Description :</label>
+            <input type="text" id="description" name="description" value="Terre de merveilles naturelles, des majestueuses Rocheuses aux vastes forêts de l'érable. Découvrez une mosaïque culturelle à travers ses villes vibrantes et son riche patrimoine. L'aventure du Grand Nord vous attend !" required>
+            
+            <input type="submit" value="Ajouter">
+        </form>
+    </main>
 </body>
 </html>

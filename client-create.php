@@ -2,29 +2,30 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once("classe/CRUD.php");
+require_once('classe/CRUD.php');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $crud = new CRUD();
+$crud = new CRUD;
 
-    $personne_data = array(
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $dataPersonne = [
         'nom' => $_POST['nom'],
         'courriel' => $_POST['courriel'],
         'telephone' => $_POST['telephone']
-    );
+    ];
     
-    $id_personne = $crud->insert('personne', $personne_data);
+    $insertPersonne = $crud->insert('personne', $dataPersonne);
 
-    if ($id_personne) {
-        $client_data = array(
-            'id' => $id_personne,
+    if ($insertPersonne !== false) {
+        $dataClient = [
+            'id' => $insertPersonne,
             'adresse' => $_POST['adresse']
-        );
+        ];
+        $insertClient = $crud->insert('client', $dataClient);
         
-        $crud->insert('client', $client_data);
+        if ($insertClient !== false) {
+            header('location:index.php');
+        }
     }
-
-    header('Location: index.php');
 }
 ?>
 
@@ -33,23 +34,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un client</title>
+    <title>Ajout client</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
 </head>
 <body>
-    <form action="client-create.php" method="POST">
-        <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" value="Margot Moreau" required><br>
+    <main>
+        <h1>Ajouter un client</h1>
+        <form action="client-create.php" method="POST">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" value="Margot Moreau" required>
 
-        <label for="courriel">Courriel</label>
-        <input type="email" id="courriel" name="courriel" value="margot.moreau@gmail.com" required><br>
+            <label for="courriel">Courriel :</label>
+            <input type="email" id="courriel" name="courriel" value="margot.moreau@gmail.com" required>
 
-        <label for="telephone">Téléphone</label>
-        <input type="text" id="telephone" name="telephone" value="450 626-9146" required><br>
+            <label for="telephone">Téléphone :</label>
+            <input type="text" id="telephone" name="telephone" value="450 626-9146" required>
 
-        <label for="adresse">Adresse</label>
-        <input type="text" id="adresse" name="adresse" value="3475 rue Saint-Urbain" required><br>
+            <label for="adresse">Adresse :</label>
+            <input type="text" id="adresse" name="adresse" value="3475 rue Saint-Urbain" required>
 
-        <input type="submit" value="Ajouter">
-    </form>
+            <input type="submit" value="Ajouter">
+        </form>
+    </main>
 </body>
 </html>
