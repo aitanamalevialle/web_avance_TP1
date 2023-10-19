@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
 class CRUD extends PDO {
 
     public function __construct(){
@@ -30,25 +31,27 @@ class CRUD extends PDO {
         $stmt = $this->query($sql);
         return $stmt->fetchAll();
     }      
-    
+
     public function insert($table, $data){
 
         $nomChamp = implode(", ",array_keys($data));
         $valeurChamp = ":".implode(", :", array_keys($data));
-    
+
         $sql = "INSERT INTO $table ($nomChamp) VALUES ($valeurChamp)";
         $stmt = $this->prepare($sql);
         foreach($data as $key => $value){
             $stmt->bindValue(":$key", $value);
         }
-        
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             return $this->lastInsertId();
         } else {
+            echo "<pre>";
+            print_r($stmt->errorInfo());
+            echo "</pre>";
             return false;
         }
-    }    
-
+    }
+    
     public function delete($table, $value, $field = 'id'){
 
         $sql = "DELETE FROM $table WHERE $field = :$field";
@@ -59,7 +62,7 @@ class CRUD extends PDO {
     }
 
     public function update($table, $data, $field='id'){
-
+    
         $queryField = null;
         foreach($data as $key=>$value){
             $queryField .="$key =:$key, ";
@@ -67,13 +70,14 @@ class CRUD extends PDO {
         $queryField = rtrim($queryField, ", ");
         
         $sql = "UPDATE $table SET $queryField WHERE $field = :$field";
-
+    
         $stmt = $this->prepare($sql);
         foreach($data as $key => $value){
             $stmt->bindValue(":$key", $value);
         }
         $stmt->execute();
-        header('location:index.php');
+    
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
 ?>

@@ -46,11 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="date" id="date retour" name="date retour" value="2023-11-01" required>
             
             <label for="prix">Prix :</label>
-            <input type="number" id="prix" name="prix" value="3000" required>
+            <input type="number" id="prix" name="prix" min="1000" value="3000" required>
             
             <label for="description">Description :</label>
-            <input type="text" id="description" name="description" value="Terre de merveilles naturelles, des majestueuses Rocheuses aux vastes forêts de l'érable. Découvrez une mosaïque culturelle à travers ses villes vibrantes et son riche patrimoine. L'aventure du Grand Nord vous attend !" required>
-            
+            <textarea id="description" name="description" rows="4" cols="50" required>Terre de merveilles naturelles, des majestueuses Rocheuses aux vastes forêts de l'érable. Découvrez une mosaïque culturelle à travers ses villes vibrantes et son riche patrimoine. L'aventure du Grand Nord vous attend !</textarea>
+
             <input type="submit" value="Ajouter">
         </form>
     </main>

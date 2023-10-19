@@ -2,10 +2,16 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Inclut le fichier CRUD.php qui contient la classe CRUD pour les opérations sur la base de données.
 require_once("classe/CRUD.php");
 
+// Crée une nouvelle instance de la classe CRUD.
 $crud = new CRUD;
+
+// Récupère la liste des clients en faisant une jointure avec la table personne sur l'identifiant 'id'.
 $clients = $crud->selectJoin('client', 'personne', 'id');
+
+// Récupère la liste des voyages triés par 'id'.
 $voyages = $crud->select('voyage', 'id');
 ?>
 
